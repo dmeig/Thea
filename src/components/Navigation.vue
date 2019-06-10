@@ -1,16 +1,21 @@
 <template>
-  <nav class="navbar is-fixed-top" role="navigation" aria-label="main navigation">
+  <nav
+    class="navbar is-fixed-top is-white-ter"
+    role="navigation"
+    aria-label="main navigation"
+  >
     <div class="navbar-brand">
-      <a class="navbar-item" href="/">
+      <router-link v-on:click.native="togleMenu" class="navbar-item" to="/">
         <img src="@/assets/thea-logo.png" width="112" height="28" />
-      </a>
+      </router-link>
 
       <a
         role="button"
-        class="navbar-burger burger"
+        :class="['navbar-burger', 'burger', burgerIsActive && 'isActive']"
         aria-label="menu"
         aria-expanded="false"
         data-target="navbarBasicExample"
+        @click="togleMenu"
       >
         <span aria-hidden="true"></span>
         <span aria-hidden="true"></span>
@@ -18,7 +23,10 @@
       </a>
     </div>
 
-    <div id="navbarBasicExample" class="navbar-menu">
+    <div
+      id="navbarBasicExample"
+      :class="['navbar-menu', !burgerIsActive && 'is-active']"
+    >
       <div class="navbar-start">
         <a class="navbar-item">
           Средства разработки web-приложений
@@ -36,9 +44,13 @@
           Курсы
         </a>
 
-        <a class="navbar-item">
+        <router-link
+          v-on:click.native="togleMenu"
+          to="/code"
+          class="navbar-item"
+        >
           Редактор кода
-        </a>
+        </router-link>
       </div>
 
       <div class="navbar-end">
@@ -60,7 +72,13 @@
 import { Vue, Component } from "vue-property-decorator";
 
 @Component({})
-export default class Navigation extends Vue {}
+export default class Navigation extends Vue {
+  private burgerIsActive: boolean = true;
+
+  private togleMenu(): void {
+    this.burgerIsActive = !this.burgerIsActive;
+  }
+}
 </script>
 <style lang='scss'>
 </style>

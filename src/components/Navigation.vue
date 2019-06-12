@@ -1,11 +1,11 @@
 <template>
   <nav
-    class="navbar is-fixed-top is-white-ter"
+    class="navbar is-fixed-top is-light"
     role="navigation"
     aria-label="main navigation"
   >
     <div class="navbar-brand">
-      <router-link v-on:click.native="togleMenu" class="navbar-item" to="/">
+      <router-link class="navbar-item" to="/">
         <img src="@/assets/thea-logo.png" width="112" height="28" />
       </router-link>
 
@@ -29,7 +29,7 @@
     >
       <div class="navbar-start">
         <a class="navbar-item">
-          Средства разработки web-приложений
+          Библиотеки эффектов
         </a>
 
         <a class="navbar-item">
@@ -37,7 +37,7 @@
         </a>
 
         <a class="navbar-item">
-          Среды разработки
+          Среды разработки и редакторы
         </a>
 
         <a class="navbar-item">
@@ -53,15 +53,33 @@
         </router-link>
       </div>
 
-      <div class="navbar-end">
+      <div v-if="$store.getters['auth/isAuthenticated']" class="navbar-end">
+        <div class="navbar-item">
+          <div class="buttons"></div>
+          <router-link
+            v-on:click.native="logout"
+            class="button is-primary"
+            to="/"
+            ><strong>Выход</strong></router-link
+          >
+        </div>
+      </div>
+
+      <div v-else class="navbar-end">
         <div class="navbar-item">
           <div class="buttons">
-            <a class="button is-primary">
-              <strong>Регистрация</strong>
-            </a>
-            <a class="button is-light">
-              Войти
-            </a>
+            <router-link
+              v-on:click.native="togleMenu"
+              class="button is-primary"
+              to="/registration"
+              ><strong>Регистрация</strong></router-link
+            >
+            <router-link
+              v-on:click.native="togleMenu"
+              class="button is-white"
+              to="/login"
+              >Войти</router-link
+            >
           </div>
         </div>
       </div>
@@ -77,6 +95,10 @@ export default class Navigation extends Vue {
 
   private togleMenu(): void {
     this.burgerIsActive = !this.burgerIsActive;
+  }
+
+  private logout(): void {
+    this.$store.dispatch("auth/authLogout");
   }
 }
 </script>

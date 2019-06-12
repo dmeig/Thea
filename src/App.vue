@@ -1,7 +1,7 @@
 <template>
   <div id="app">
     <Navigation />
-    <router-view />
+    <transition name="fade"><router-view /></transition>
     <Footer />
   </div>
 </template>
@@ -20,4 +20,21 @@ import Footer from "@/components/Footer.vue";
 })
 export default class App extends Vue {}
 </script>
+
+<style>
+.fade-enter-active,
+.fade-leave-active {
+  transition-property: opacity;
+  transition-duration: 0.25s;
+}
+
+.fade-enter-active {
+  transition-delay: 0.25s;
+}
+
+.fade-enter,
+.fade-leave-active {
+  opacity: 0;
+}
+</style>
 

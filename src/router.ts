@@ -2,10 +2,13 @@ import Vue from 'vue';
 import Router from 'vue-router';
 import Home from './views/Home.vue';
 import CodeEditor from '@/views/CodeEditor.vue';
+import Login from '@/views/Login.vue';
+import Register from '@/views/Registration.vue';
+import store from '@/store/store';
 
 Vue.use(Router);
 
-export default new Router({
+const router = new Router({
   mode: 'history',
   base: process.env.BASE_URL,
   routes: [
@@ -27,6 +30,33 @@ export default new Router({
       // which is lazy-loaded when the route is visited.
       component: () =>
         import(/* webpackChunkName: "about" */ './views/About.vue')
+    },
+    {
+      path: '/login',
+      name: 'login',
+      component: Login
+    },
+    {
+      path: '/registration',
+      name: 'registration',
+      component: Register
     }
   ]
 });
+
+router.beforeEach((to: any, from: any, next: any) => {
+  if (to.matched.some((record: any) => record.meta.requiresAuth)) {
+    if (!store.getters['auth/isAuthenticated']) {
+      next({
+        path: '/login',
+        query: { redirect: to.fullPath }
+      });
+    } else {
+      next();
+    }
+  } else {
+    next();
+  }
+});
+
+export default router;

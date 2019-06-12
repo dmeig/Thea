@@ -1,12 +1,12 @@
 <template>
   <div class="home">
-    <section class="hero hero-has-background is-link is-fullheight-with-navbar">
+    <section class="hero hero-has-background is-fullheight-with-navbar">
       <div class="hero-body has-mask">
         <div class="container">
           <h1 class="title is-1 has-text-white">
             Thea-project
           </h1>
-          <h3 class="subtitle is-3">
+          <h3 class="subtitle is-3 has-text-white">
             Сайт для web-дизайнеров и разработчиков
           </h3>
         </div>

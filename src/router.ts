@@ -5,6 +5,9 @@ import CodeEditor from '@/views/CodeEditor.vue';
 import Login from '@/views/Login.vue';
 import Register from '@/views/Registration.vue';
 import store from '@/store/store';
+import EffectsLibrary from '@/views/EffectsLibrary.vue';
+import Resources from '@/views/Resources.vue';
+import Environment from '@/views/Environment.vue';
 
 Vue.use(Router);
 
@@ -16,6 +19,21 @@ const router = new Router({
       path: '/',
       name: 'home',
       component: Home
+    },
+    {
+      path: '/resources',
+      name: 'resources',
+      component: Resources
+    },
+    {
+      path: '/environment',
+      name: 'environment',
+      component: Environment
+    },
+    {
+      path: '/effects',
+      name: 'effects',
+      component: EffectsLibrary
     },
     {
       path: '/code',

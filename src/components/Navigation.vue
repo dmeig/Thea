@@ -28,17 +28,38 @@
       :class="['navbar-menu', !burgerIsActive && 'is-active']"
     >
       <div class="navbar-start">
-        <a class="navbar-item">
+
+        <router-link
+          v-on:click.native="togleMenu"
+          to="/about"
+          class="navbar-item"
+        >
+          О сайте
+        </router-link>
+
+        <router-link
+           v-on:click.native="togleMenu"
+           to="/effects"
+           class="navbar-item"
+        >
           Библиотеки эффектов
-        </a>
+        </router-link>
 
-        <a class="navbar-item">
+        <router-link
+           v-on:click.native="togleMenu"
+           to="/resources"
+           class="navbar-item"
+        >
           Ресурсы
-        </a>
+        </router-link>
 
-        <a class="navbar-item">
+         <router-link
+           v-on:click.native="togleMenu"
+           to="/environment"
+           class="navbar-item"
+        >
           Среды разработки и редакторы
-        </a>
+        </router-link>
 
         <a class="navbar-item">
           Курсы
@@ -51,6 +72,8 @@
         >
           Редактор кода
         </router-link>
+
+        
       </div>
 
       <div v-if="$store.getters['auth/isAuthenticated']" class="navbar-end">

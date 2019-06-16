@@ -1,12 +1,25 @@
 import { Credentials } from '@/models/credentials.interface';
 import { authService } from '@/services/auth.service';
+import jwtHelper from '@/helpers/jwtHelpers';
 
-const state = { token: localStorage.getItem('auth-token') || '', status: '' };
+export interface AuthState {
+  token: string;
+  status: string;
+  isAdmin: boolean;
+}
+
+const state: AuthState = {
+  token: '',
+  status: '',
+  isAdmin: false
+};
 
 const getters = {
-  isAuthenticated: (authState: any) => !!authState.token,
-  authStatus: (authState: any) => authState.status,
-  authToken: (authState: any) => authState.token
+  isAdmin: (authState: AuthState) =>
+    jwtHelper.parseJwt(authState.token).id == 1,
+  isAuthenticated: (authState: AuthState) => !!authState.token,
+  authStatus: (authState: AuthState) => authState.status,
+  authToken: (authState: AuthState) => authState.token
 };
 
 const actions = {
@@ -18,13 +31,11 @@ const actions = {
       commit('authRequest');
       authService.login(credentials).subscribe(
         (result: any) => {
-          localStorage.setItem('auth-token', result);
           commit('authSuccess', result);
           resolve(result);
         },
         (errors: any) => {
           commit('authError', errors);
-          localStorage.removeItem('auth-token');
           reject(errors);
         }
       );
@@ -40,17 +51,17 @@ const actions = {
 };
 
 const mutations = {
-  authRequest: (authState: any) => {
+  authRequest: (authState: AuthState) => {
     authState.status = 'attempting authentication request';
   },
-  authSuccess: (authState: any, authToken: string) => {
+  authSuccess: (authState: AuthState, authToken: string) => {
     authState.status = 'authentication succeeded';
     authState.token = authToken;
   },
-  authError: (authState: any) => {
+  authError: (authState: AuthState) => {
     authState.status = 'error';
   },
-  authLogout: (authState: any) => {
+  authLogout: (authState: AuthState) => {
     authState.token = '';
   }
 };

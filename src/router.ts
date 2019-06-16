@@ -1,13 +1,8 @@
 import Vue from 'vue';
-import Router from 'vue-router';
+import Router, { Route } from 'vue-router';
 import Home from './views/Home.vue';
-import CodeEditor from '@/views/CodeEditor.vue';
-import Login from '@/views/Login.vue';
-import Register from '@/views/Registration.vue';
 import store from '@/store/store';
-import EffectsLibrary from '@/views/EffectsLibrary.vue';
-import Resources from '@/views/Resources.vue';
-import Environment from '@/views/Environment.vue';
+import NotFoundComponent from '@/views/NotFound.vue';
 
 Vue.use(Router);
 
@@ -23,46 +18,98 @@ const router = new Router({
     {
       path: '/resources',
       name: 'resources',
-      component: Resources
+      component: () => import('@/views/Resources.vue')
     },
     {
       path: '/environment',
       name: 'environment',
-      component: Environment
+      component: () => import('@/views/Environment.vue')
     },
     {
       path: '/effects',
       name: 'effects',
-      component: EffectsLibrary
+      component: () => import('@/views/EffectsLibrary.vue')
+    },
+    {
+      path: '/courses',
+      name: 'courses',
+      component: () => import('@/views/Courses.vue')
+    },
+    {
+      path: '/course',
+      name: 'course',
+      component: () => import('@/views/Courses/Course.vue')
     },
     {
       path: '/code',
       name: 'code',
-      component: CodeEditor
+      component: () => import('@/views/CodeEditor.vue'),
+      props: (route) => ({ snippetId: route.query.snippetId })
     },
     {
       path: '/about',
       name: 'about',
-      // route level code-splitting
-      // this generates a separate chunk (about.[hash].js) for this route
-      // which is lazy-loaded when the route is visited.
-      component: () =>
-        import(/* webpackChunkName: "about" */ './views/About.vue')
+      component: () => import('./views/About.vue')
     },
     {
       path: '/login',
       name: 'login',
-      component: Login
+      component: () => import('@/views/Login.vue')
     },
     {
       path: '/registration',
       name: 'registration',
-      component: Register
-    }
+      component: () => import('@/views/Registration.vue')
+    },
+    {
+      path: '/verify',
+      name: 'verify',
+      component: () => import('@/views/Verify.vue'),
+      props: (route) => ({ userId: route.query.userId, code: route.query.code })
+    },
+    {
+      path: '/admin',
+      name: 'admin',
+      component: () => import('@/views/AdminPanel.vue'),
+      meta: { requiresAuth: true },
+      children: [
+        {
+          path: 'effects',
+          name: 'admin',
+          component: () => import('@/views/AdminPanel/Effects.vue'),
+          meta: { requiresAuth: true }
+        },
+        {
+          path: 'snippets',
+          name: 'snippets',
+          component: () => import('@/views/AdminPanel/Snippets.vue'),
+          meta: { requiresAuth: true }
+        },
+        {
+          path: 'tests',
+          name: 'tests',
+          component: () => import('@/views/AdminPanel/Tests.vue'),
+          meta: { requiresAuth: true }
+        },
+        {
+          path: 'sections',
+          name: 'sections',
+          component: () => import('@/views/AdminPanel/CourseSections.vue'),
+          meta: { requiresAuth: true }
+        },
+        {
+          path: 'courses',
+          name: 'courses',
+          component: () => import('@/views/AdminPanel/Courses.vue'),
+          meta: { requiresAuth: true }
+        }
+      ]
+    },
+    { path: '*', component: NotFoundComponent }
   ]
 });
 
-router.beforeEach((to: any, from: any, next: any) => {
+router.beforeEach((to: Route, from: any, next: any) => {
   if (to.matched.some((record: any) => record.meta.requiresAuth)) {
     if (!store.getters['auth/isAuthenticated']) {
       next({

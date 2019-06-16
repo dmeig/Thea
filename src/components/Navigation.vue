@@ -28,42 +28,37 @@
       :class="['navbar-menu', !burgerIsActive && 'is-active']"
     >
       <div class="navbar-start">
-
         <router-link
           v-on:click.native="togleMenu"
-          to="/about"
+          to="/effects"
           class="navbar-item"
-        >
-          О сайте
-        </router-link>
-
-        <router-link
-           v-on:click.native="togleMenu"
-           to="/effects"
-           class="navbar-item"
         >
           Библиотеки эффектов
         </router-link>
 
         <router-link
-           v-on:click.native="togleMenu"
-           to="/resources"
-           class="navbar-item"
+          v-on:click.native="togleMenu"
+          to="/resources"
+          class="navbar-item"
         >
           Ресурсы
         </router-link>
 
-         <router-link
-           v-on:click.native="togleMenu"
-           to="/environment"
-           class="navbar-item"
+        <router-link
+          v-on:click.native="togleMenu"
+          to="/environment"
+          class="navbar-item"
         >
           Среды разработки и редакторы
         </router-link>
 
-        <a class="navbar-item">
+        <router-link
+          v-on:click.native="togleMenu"
+          to="/courses"
+          class="navbar-item"
+        >
           Курсы
-        </a>
+        </router-link>
 
         <router-link
           v-on:click.native="togleMenu"
@@ -73,7 +68,17 @@
           Редактор кода
         </router-link>
 
-        
+        <router-link
+          v-on:click.native="togleMenu"
+          to="/about"
+          class="navbar-item"
+        >
+          О сайте
+        </router-link>
+
+        <!-- <router-link v-if="isAdmin" class="navbar-item" to="/admin"
+          >Администрирование</router-link
+        > -->
       </div>
 
       <div v-if="$store.getters['auth/isAuthenticated']" class="navbar-end">
@@ -111,10 +116,13 @@
 </template>
 <script lang='ts'>
 import { Vue, Component } from "vue-property-decorator";
+import { mapGetters } from "vuex";
 
-@Component({})
+@Component({ computed: { ...mapGetters("auth", ["isAdmin"]) } })
 export default class Navigation extends Vue {
   private burgerIsActive: boolean = true;
+
+  private isAdmin!: boolean;
 
   private togleMenu(): void {
     this.burgerIsActive = !this.burgerIsActive;

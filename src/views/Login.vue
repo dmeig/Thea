@@ -79,7 +79,11 @@ export default class RegistrationForm extends Vue {
     this.$store
       .dispatch("auth/authRequest", this.credentials)
       .then(result => {
-        this.$router.push("/");
+        if (this.$router.currentRoute.query.redirect) {
+          this.$router.push(this.$router.currentRoute.query.redirect as string);
+        } else {
+          this.$router.push("/");
+        }        
       })
       .catch(err => {
         this.errors = err;

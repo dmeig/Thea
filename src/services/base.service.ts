@@ -1,7 +1,17 @@
 import { throwError } from 'rxjs';
 
 export abstract class BaseService {
-  protected readonly api = 'http://localhost:5000/api';
+  protected readonly api =
+    process.env.NODE_ENV !== 'production'
+      ? 'http://localhost:5000'
+      : 'http://api.thea-project.ru';
+
+  protected readonly jsonHeaderConfig = {
+    headers: {
+      'Content-Type': 'application/json;charset=UTF-8',
+      'Access-Control-Allow-Origin': '*'
+    }
+  };
 
   protected handleError(error: any) {
     if (!error) {

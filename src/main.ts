@@ -5,6 +5,13 @@ import store from '@/store/store';
 import './registerServiceWorker';
 import axios from 'axios';
 
+import Buefy from 'buefy';
+import 'buefy/dist/buefy.css';
+
+require('@/assets/main.scss');
+
+Vue.use(Buefy);
+
 Vue.config.productionTip = false;
 
 new Vue({

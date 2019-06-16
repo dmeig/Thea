@@ -21,6 +21,15 @@ class AccountService extends BaseService {
       catchError((error: any) => this.handleError(error.response))
     );
   }
+
+  public verify(userId: number, code: string) {
+    return from(
+      axios.get(`${this.api}/accounts/verify`, { params: { userId, code } })
+    ).pipe(
+      map((res: any) => true),
+      catchError((error: any) => this.handleError(error.response))
+    );
+  }
 }
 
 export const accountService = AccountService.Instance;

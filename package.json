@@ -10,7 +10,7 @@
   "dependencies": {
     "@rxjs/rx": "^4.1.0",
     "@types/js-cookie": "^2.2.2",
-    "axios": "^0.19.0",
+    "axios": "^0.21.1",
     "buefy": "^0.7.7",
     "core-js": "^2.6.5",
     "js-cookie": "^2.2.0",
